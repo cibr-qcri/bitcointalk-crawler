@@ -2,28 +2,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: darkweb-recrawler-deployment
+  name: bitcointalk-crawler-deployment
   labels:
-    app: darkweb-recrawler
-    tier: recrawler
+    app: bitcointalk-crawler
+    tier: crawler
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: darkweb-recrawler
-      tier: recrawler
+      app: bitcointalk-crawler
+      tier: crawler
   template:
     metadata:
       labels:
-        app: darkweb-recrawler
-        tier: recrawler
+        app: bitcointalk-crawler
+        tier: crawler
     spec:
       containers:
-        - name: darkweb-recrawler
-          image: "{{ .Values.darkweb.image.name }}:{{ .Values.darkweb.image.tag }}"
+        - name: bitcointalk-crawler
+          image: "{{ .Values.bitcointalk.image.name }}:{{ .Values.bitcointalk.image.tag }}"
           imagePullPolicy: Always
           volumeMounts:
-            - name: darkweb-recrawler
+            - name: bitcointalk-crawler
               mountPath: /mnt/data
           {{- if .Values.elasticsearch_ip }}
           env:
@@ -31,6 +31,6 @@ spec:
               value: {{ .Values.elasticsearch_ip }}
           {{- end }}
       volumes:
-        - name: darkweb-recrawler
+        - name: bitcointalk-crawler
           persistentVolumeClaim:
-            claimName: darkweb-recrawler-pv-claim
+            claimName: bitcointalk-crawler-pv-claim

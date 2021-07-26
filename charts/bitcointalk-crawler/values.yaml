@@ -1,4 +1,4 @@
-darkweb:
+bitcointalk:
   image:
     name: "toshiqcri/bitcointalk-crawler"
     tag: "1.0.0"
