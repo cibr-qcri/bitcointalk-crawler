@@ -111,7 +111,7 @@ class BitcointalkSpider(scrapy.Spider):
     @staticmethod
     def to_datetime(value):
         try:
-            return parser.parse(value).timestamp() * 1000
+            return int(parser.parse(value).timestamp() * 1000)
         except ValueError:
             logging.warning("Cannot cast value:%s to datetime." % value)
             return ""
@@ -137,7 +137,7 @@ class BitcointalkSpider(scrapy.Spider):
     def validate_address(self, btc_address):
         pattern1 = re.compile('[1,3][a-km-zA-HJ-NP-Z1-9]{25,34}')
         pattern2 = re.compile('bc1[a-zA-HJ-NP-Z0-9]{25,39}')
-        if (pattern1.match(btc_address) or pattern2.match(btc_address)) and self.check_bc(btc_address):
+        if (pattern1.match(btc_address) or pattern2.match(btc_address)) and BitcointalkSpider.check_bc(btc_address):
             return btc_address
         logging.warning("Invalid bitcoin address:%s", btc_address)
         return ''
@@ -150,9 +150,10 @@ class BitcointalkSpider(scrapy.Spider):
             n = n * 58 + digits58.index(char)
         return n.to_bytes(length, 'big')
 
-    def check_bc(self, bc):
+    @staticmethod
+    def check_bc(bc):
         try:
-            bcbytes = self.decode_base58(bc, 25)
+            bcbytes = BitcointalkSpider.decode_base58(bc, 25)
             return bcbytes[-4:] == sha256(sha256(
                 bcbytes[:-4]).digest()).digest()[:4]
         except:

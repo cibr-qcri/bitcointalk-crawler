@@ -54,31 +54,33 @@ class BitcointalkCrawlerPipeline(object):
 
         tag = {
             "_id": doc_id,
-            'timestamp': int(datetime.now().timestamp() * 1000),
-            'type': 'user',
-            'source': 'bitcointalk',
-            "method": "html",
-            "version": 1,
-            "info": {
-                "domain": "bitcointalk.org",
-                "url": item["link"],
-                "title": "View the profile of " + item["name"],
-                "external_urls": {
-                    "href_urls": {
-                        "web": [],
-                        "tor": []
-                    }
-                },
-                "tags": {
-                    "cryptocurrency": {
-                        "address": {
-                            "btc": list(addr_list)
+            "data": {
+                "timestamp": int(datetime.now().timestamp() * 1000),
+                "type": "user",
+                "source": "bitcointalk",
+                "method": "html",
+                "version": 1,
+                "info": {
+                    "domain": "bitcointalk.org",
+                    "url": item["link"],
+                    "title": "View the profile of " + item["name"],
+                    "external_urls": {
+                        "href_urls": {
+                            "web": [],
+                            "tor": []
                         }
                     },
-                    "profile": profile,
-                }
-            },
-            "summary": list(addr_list)
+                    "tags": {
+                        "cryptocurrency": {
+                            "address": {
+                                "btc": list(addr_list)
+                            }
+                        },
+                        "profile": profile,
+                    }
+                },
+                "summary": list(addr_list)
+            }
         }
         self.buffer.append(tag)
         self.write_to_file(response, doc_id)
