@@ -1,0 +1,5 @@
+scrapy
+elasticsearch
+scrapy_proxies
+python-dateutil
+python-arango
